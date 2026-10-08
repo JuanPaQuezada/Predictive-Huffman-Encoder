@@ -31,6 +31,23 @@ print(matriz_probabilidades)
 # Calcular las probabilidades más altas y guardar sus posiciones
 probabilidad_mayor <- apply(matriz_probabilidades, MARGIN = 1, FUN = which.max)
 prediccion <- colnames(matriz_probabilidades)[probabilidad_mayor]
-# vector/diccionario para acceder a cada letra y a su predicción correspondiente
+# Vector/diccionario para acceder a cada letra y a su predicción correspondiente
 names(prediccion) <- rownames(matriz_probabilidades)
 print(prediccion)
+
+# Vector vacío con misma longitud que el texto original
+n <- length(texto)
+texto_codificado <- character(n)
+
+texto_codificado[1] <- texto[1]
+for(i in 2:n){
+    letra_anterior <- texto[i - 1]
+    letra_actual <- texto[i]
+
+    letra_esperada <- prediccion(letra_anterior)
+
+    if(!is.na(letra_esperada) && letra_esperada == letra_actual){
+        texto_codificado[i] <- "_"
+    } else{
+        texto_codificado[i] <- letra_actual
+    }
