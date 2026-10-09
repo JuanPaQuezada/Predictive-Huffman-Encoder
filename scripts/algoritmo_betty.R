@@ -31,40 +31,48 @@ generador_predicciones <- function(texto_caracteres){
     # Generar tabla de probabilidades a partir de las frecuencias acumuladas (frec. relativas)
     matriz_probabilidades <- prop.table(matriz_frecuencias, margin = 1)
 
-    # Calcular las probabilidades más altas y guardar sus posiciones
-    probabilidad_mayor <- apply(matriz_probabilidades, MARGIN = 1, FUN = which.max)
-    prediccion <- colnames(matriz_probabilidades)[probabilidad_mayor]
+    # Calcular las 2 probabilidades más altas y guardar sus posiciones
+    probabilidades <- apply(matriz_probabilidades, MARGIN = 1, FUN = function(filas){ order(filas, decreasing = TRUE)[1:2] })
+    prediccion_top1 <- colnames(matriz_probabilidades)[probabilidades[1, ]]
+    prediccion_top2 <- colnames(matriz_probabilidades)[probabilidades[2, ]]
 
-    # Vector/diccionario para acceder a cada letra y a su predicción correspondiente
-    names(prediccion) <- rownames(matriz_probabilidades)
+    # Diccionario para acceder a cada letra y a su predicción correspondiente
+    predicciones <- data.frame(
+        op1 = prediccion_top1,
+        op2 = prediccion_top2,
+        row.names = rownames(matriz_probabilidades)
+    )
 
-    return(prediccion)
+    return(predicciones)
 }
 
-susticion_Betty <- function(texto_caracteres, prediccion){
+susticion_Betty <- function(texto_caracteres, predicciones){
     # Vector vacío con misma longitud que el texto original
     n <- length(texto_caracteres)
     texto_codificado <- character(n)
 
     texto_codificado[1] <- texto_caracteres[1]
 
-    # Evaluar predicción y aplicar sustitución Betty
+    # Evaluar predicción y aplicar sustitución Betty2
     for(i in 2:n){
         letra_anterior <- texto_caracteres[i - 1]
         letra_actual <- texto_caracteres[i]
 
-        letra_esperada <- prediccion[letra_anterior]
+        letra_esperada_top1 <- predicciones[letra_anterior, "op1"]
+        letra_esperada_top2 <- predicciones[letra_anterior, "op2"]
 
-        if(!is.na(letra_esperada) && letra_esperada == letra_actual){
+        # Evaluación de predicciones y asignación de símbolos especiales en caso de que sea correcta
+        if(!is.na(letra_esperada_top1) && letra_esperada_top1 == letra_actual){
             texto_codificado[i] <- "_"
+        } else if(!is.na(letra_esperada_top2) && letra_esperada_top2 == letra_actual){
+            texto_codificado[i] <- "="
         } else{
             texto_codificado[i] <- letra_actual
         }
     }
 
-    # Sustitución Betty aplicada guardada en vector texto
+    # Sustitución Betty2 aplicada guardada en vector texto
     texto <- paste(texto_codificado, collapse = "")
-    print(texto)
-
+    
     return(texto)
 }
