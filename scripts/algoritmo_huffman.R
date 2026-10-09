@@ -53,4 +53,4 @@ codificar_texto<-function(texto,diccionario){
     x<-sapply(caracteres, function(x) diccionario[[x]])
     secuencia_bits<-paste(x,collapse = "")
     return(secuencia_bits)
-
+}
