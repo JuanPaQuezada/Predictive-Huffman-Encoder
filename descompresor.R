@@ -26,4 +26,11 @@ cat("Letras tras revertir Betty:", nchar(texto_char), "\n")
 cat("-------------------\n")
 writeLines(texto_char, archivo_salida, useBytes=TRUE)
 cat("Descompresion completada. Archivo descomprimido guardado como ", archivo_salida, "\n")
+peso_binario <- file.size(archivo_comprimido)
+peso_recuperado <- file.size(archivo_salida)
+
+cat("\n--- REPORTE DE DESCOMPRESIÓN ---\n")
+cat("Peso del archivo binario leído:", peso_binario, "bytes\n")
+cat("Peso del texto recuperado:", peso_recuperado, "bytes\n")
+cat("¡Descompresión finalizada con éxito!\n")
 

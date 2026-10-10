@@ -32,4 +32,11 @@ metadatos<-list(
                 )
 saveRDS(metadatos,"metadatos.rds")
 cat("Compresion completada. Archivo comprimido guardado como ", nombre_archivo_comprimido, " y metadatos guardados en metadatos.rds\n")
+# Obtener los tamaños exactos en bytes
+peso_original <- file.size(archivo_entrada)
+peso_comprimido <- file.size("archivo_comprimido.bin")
 
+# Mostrar los resultados
+cat("Peso original:", peso_original, "bytes\n")
+cat("Peso comprimido (.bin):", peso_comprimido, "bytes\n")
+cat("Ahorro de espacio:", round((1 - peso_comprimido/peso_original)*100, 2), "%\n")
