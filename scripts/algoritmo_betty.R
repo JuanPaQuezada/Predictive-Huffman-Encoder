@@ -1,18 +1,3 @@
-# Leer el texto del archivo y guardarlo en un vector de caracteres
-# archivo <- readLines("file", encode = "UTF-8")
-archivo <- c("La tarde
-El sol se va lento y la tarde se torna serena.
-El mar no termina y la arena se siente tranquila.
-Ana mira el mar y sonríe.
-
-La tarde termina y la noche se acerca.
-El mar se serena y la arena se torna fría.
-Ana mira la noche y sonríe.
-
-La noche termina y el sol sale.
-Ana se torna en arena.
-El mar la mira y sonríe.")
-
 procesar_archivo <- function(archivo){
     texto_completo <- paste(archivo, collapse = "\n")
     texto_caracteres <- strsplit(texto_completo, split = "")[[1]]
@@ -46,7 +31,7 @@ generador_predicciones <- function(texto_caracteres){
     return(predicciones)
 }
 
-susticion_Betty <- function(texto_caracteres, predicciones){
+sustitucion_Betty <- function(texto_caracteres, predicciones){
     # Vector vacío con misma longitud que el texto original
     n <- length(texto_caracteres)
     texto_codificado <- character(n)

@@ -4,7 +4,7 @@ source("./scripts/algoritmo_betty.R")
 source("./scripts/algoritmo_huffman.R")
 source("./scripts/operaciones_binarias.R")
 #definir archivos de entrada y salida
-archivo_entrada <- "texto_prueba.txt"
+archivo_entrada <- file.choose()
 nombre_archivo_comprimido<-"archivo_comprimido.bin"
 
 #leer el archivo de texto original
@@ -13,7 +13,7 @@ lineas_archivo<-readLines(archivo_entrada, encoding = "UTF-8")
 #fase de sustitucion de sustitucion de Betty 
 texto_char<-procesar_archivo(lineas_archivo)
 tabla_predicciones<-generador_predicciones(texto_char)
-texto_betty<-susticion_Betty(texto_char,tabla_predicciones)
+texto_betty<-sustitucion_Betty(texto_char,tabla_predicciones)
 
 #fase de huffman 
 df_frecuencias<-obtener_frecuencias(texto_betty)
