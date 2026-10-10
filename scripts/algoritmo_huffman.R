@@ -8,6 +8,7 @@ obtener_frecuencias<-function(texto){
     #copnvertir a un dataframe y renombrar columnas
     df_frecuencias<-as.data.frame(frecuencias)
     colnames(df_frecuencias)<-c("simbolo","frecuencia")
+    df_frecuencias$simbolo<-as.character(df_frecuencias$simbolo)
     df_frecuencias<-df_frecuencias[order(df_frecuencias$frecuencia),]
     return(df_frecuencias)
 }
@@ -54,3 +55,28 @@ codificar_texto<-function(texto,diccionario){
     secuencia_bits<-paste(x,collapse = "")
     return(secuencia_bits)
 }
+
+decodificar_texto<-function(secuencia_bits,diccionario_huffman,bits_validos){
+    #invertir el diccionario para obtener un mapeo de codigo binario a simbolo
+    diccionario_inverso<-setNames(names(diccionario_huffman),unlist(diccionario_huffman))
+    if(length(secuencia_bits)==1){
+        bits<-strsplit(secuencia_bits,split="")[[1]]
+    }else{
+        bits<-as.character(secuencia_bits)
+    }
+    if(bits_validos>0 && bits_validos<8){
+        bits_basura<-8-bits_validos
+        bits<-head(bits,-bits_basura)
+    }
+    texto_decodificado<-character()
+    buffer<-""
+    for(bit in bits){
+        buffer<-paste0(buffer,bit)
+        if(buffer %in% names(diccionario_inverso)){
+            texto_decodificado<-c(texto_decodificado,diccionario_inverso[[buffer]])
+            buffer<-""
+        }
+    }
+    texto_final<-paste(texto_decodificado,collapse="")
+    return(texto_final)
+}    

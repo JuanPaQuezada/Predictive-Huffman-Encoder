@@ -14,7 +14,7 @@ Ana se torna en arena.
 El mar la mira y sonríe.")
 
 procesar_archivo <- function(archivo){
-    texto_completo <- paste(archivo, collapse = " ")
+    texto_completo <- paste(archivo, collapse = "\n")
     texto_caracteres <- strsplit(texto_completo, split = "")[[1]]
 
     return(texto_caracteres)
@@ -75,4 +75,28 @@ susticion_Betty <- function(texto_caracteres, predicciones){
     texto <- paste(texto_codificado, collapse = "")
     
     return(texto)
+}
+
+revertir_sustitucion_Betty<-function(texto_betty, tabla_predicciones){
+    caracteres<-strsplit(texto_betty,split="")[[1]]
+    if(length(caracteres)<=1) return(caracteres)
+    texto_recuperado<-character(length(caracteres))
+    texto_recuperado[1]<-caracteres[1]
+    caracter_anterior<-caracteres[1]
+    for(i in 2:length(caracteres)){
+        caracter_actual<-caracteres[i]
+        if(caracter_actual=="_"){
+            letra_predicha<-tabla_predicciones[caracter_anterior,"op1"]
+        }
+        else if(caracter_actual=="="){
+            letra_predicha<-tabla_predicciones[caracter_anterior,"op2"]
+        }
+        else{
+            letra_predicha<-caracter_actual
+        }
+        texto_recuperado[i]<-letra_predicha
+        caracter_anterior<-letra_predicha
+    }
+    texto_final<-paste(texto_recuperado,collapse="")
+    return(texto_final)
 }
