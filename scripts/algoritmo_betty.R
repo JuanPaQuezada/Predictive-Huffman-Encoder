@@ -12,7 +12,8 @@ generador_predicciones <- function(texto_caracteres){
 
     # Generar tabla de frecuencias absolutas de los pares
     matriz_frecuencias <- table(letras_actuales, letras_siguientes)
-
+    #agregando suavizado de laplace para evitar ceros en la matriz de frecuencias
+    matriz_frecuencias <- matriz_frecuencias+1
     # Generar tabla de probabilidades a partir de las frecuencias acumuladas (frec. relativas)
     matriz_probabilidades <- prop.table(matriz_frecuencias, margin = 1)
 
